@@ -8,6 +8,9 @@ jobs:
       - setup_remote_docker  # Enables Docker commands within CircleCI
 
       - run:
+          name: Docker Hub Login
+          command: echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
+      - run:
           name: Pull Docker Image
           command: docker pull kartavyatyagi/kattu:latest
 
@@ -15,7 +18,9 @@ jobs:
           name: Run Container
           command: |
             docker run -d -p 3000:3000 --name node-app kartavyatyagi/kattu:latest
-
+      - run:
+          name: Verify Container Status
+          command: docker ps -a
 workflows:
   deploy_workflow:
     jobs:
