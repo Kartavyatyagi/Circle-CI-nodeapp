@@ -1,29 +1,28 @@
 version: 2.1
 
 jobs:
-  run-node-app:
+  deploy:
     docker:
-      - image: kartavyatyagi/kattu:latest  # Use your Docker Hub image
+      - image: circleci/node:18  # Node.js image for deployment steps
     steps:
-      - checkout
+      - setup_remote_docker  # Enables Docker commands within CircleCI
 
       - run:
-          name: Change Working Directory (if required)
-          command: cd /root/Project/Docker/getting-started-app/Circle-CI-nodeapp  # Ensure this matches your app structure
+          name: Pull Docker Image
+          command: docker pull kartavyatyagi/kattu:latest
 
       - run:
-          name: Verify Node Version
-          command: node --version
+          name: Run Container
+          command: |
+            docker run -d -p 3000:3000 --name node-app kartavyatyagi/kattu:latest
 
       - run:
-          name: Install Dependencies
-          command: npm install
-
-      - run:
-          name: Start Node.js Application
-          command: node app.js  # Replace with your app's entry point
+          name: Health Check
+          command: |
+            sleep 5  # Wait for the container to start
+            curl --fail http://localhost:3000 || exit 1
 
 workflows:
-  run-app:
+  deploy_workflow:
     jobs:
-      - run-node-app
+      - deploy
