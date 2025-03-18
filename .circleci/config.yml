@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   deploy:
     docker:
-      - image: circleci/node:18  # Node.js image for deployment steps
+      - image: cimg/node:18.18  # Node.js image for deployment steps
     steps:
       - setup_remote_docker  # Enables Docker commands within CircleCI
 
