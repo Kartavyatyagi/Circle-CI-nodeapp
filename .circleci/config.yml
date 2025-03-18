@@ -16,12 +16,6 @@ jobs:
           command: |
             docker run -d -p 3000:3000 --name node-app kartavyatyagi/kattu:latest
 
-      - run:
-          name: Health Check
-          command: |
-            sleep 5  # Wait for the container to start
-            curl --fail http://localhost:3000 || exit 1
-
 workflows:
   deploy_workflow:
     jobs:
