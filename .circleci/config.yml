@@ -1,0 +1,23 @@
+version: 2.1
+
+jobs:
+  run-node-app:
+    docker:
+      - image: kartavyatyagi/kattu:latest  # Use your Docker Hub image
+    steps:
+      - run:
+          name: Verify Node Version
+          command: node --version
+
+      - run:
+          name: Install Dependencies
+          command: npm install
+
+      - run:
+          name: Start Node.js Application
+          command: node app.js  # Replace with your app's entry point
+
+workflows:
+  run-app:
+    jobs:
+      - run-node-app
